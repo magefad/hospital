@@ -10,11 +10,11 @@
 
 
 interface StateInterface {
-    const STATE_PATIENT_NEW            = 'new patient';
-    const STATE_PATIENT_WAITING        = 'waiting...';
-    const STATE_PATIENT_WAITING_DOCTOR = 'waiting for free doctor...';
-    const STATE_PATIENT_PROCESSING     = 'at the doctor...';
-    const STATE_PATIENT_NO_DOCTOR      = 'no doctor...';
+    const STATE_PATIENT_NEW            = 'new patient            ';
+    const STATE_PATIENT_WAITING        = 'waiting................';
+    const STATE_PATIENT_WAITING_DOCTOR = 'waiting for free doctor';
+    const STATE_PATIENT_PROCESSING     = 'at the doctor..........';
+    const STATE_PATIENT_NO_DOCTOR      = 'no doctor..............';
 
     const STATE_DOCTOR_BUSY = 'attached with patient';
     const STATE_DOCTOR_FREE = 'waiting patient..';

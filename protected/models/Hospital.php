@@ -51,11 +51,12 @@ class Hospital implements HospitalInterface {
 
     public function open()
     {
-        echo "\nAttach patients to doctors.........................................\n\n";
-        foreach ($this->getPatientByStatus() as $patient) { // новых посетителей к терапевту
-            $this->getTherapeutist()->getDirectForPatient($patient, $this->doctor);
+        echo PHP_EOL . '____________________Attach patients to doctors_________________________' . PHP_EOL;
+        $therapeutist = $this->getTherapeutist();
+        echo $therapeutist->getName() . ' gives directions...........................' . PHP_EOL;
+        foreach ($this->getPatientByStatus() as $patient) {
+            $therapeutist->getDirectForPatient($patient, $this->doctor);
         }
-        echo "\nend\n";
     }
 
     public function working()
@@ -81,7 +82,8 @@ class Hospital implements HospitalInterface {
 
     public function statistics()
     {
-        echo 'Patient List.......................................................' . PHP_EOL;
+        echo PHP_EOL . '__________________________STATISTICS______________________________';
+        echo PHP_EOL . 'Patient List.......................................................' . PHP_EOL;
         foreach ($this->patient as $patient) {
             echo $patient->card() . PHP_EOL . PHP_EOL;
         }
@@ -91,6 +93,7 @@ class Hospital implements HospitalInterface {
             echo $doctor->getName() . "\t";
             echo $doctor->getState() . PHP_EOL . PHP_EOL;
         }
+        //echo '_______________________________________________________________________' . PHP_EOL;
     }
 
     /**

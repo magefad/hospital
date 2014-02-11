@@ -16,13 +16,10 @@ class SiteController extends CController
         Yii::setPathOfAlias('Sickness', Yii::getPathOfAlias('application.models.Sickness'));
 
         $hospital = new Hospital();//первоначальные данные в конструкторе
-        $hospital->statistics();
-        $hospital->open();
-        $hospital->working();
+        $hospital->statistics(); // исходные данные
+        $hospital->open(); //запись к врачам через терапевта
+        $hospital->working(); //врачи лечат
 
         $hospital->statistics();
-        //Когда принимает терапевт, к нему идут все за направлением или справкой.
-        //Если у пациента заболевание, не относящееся к текущему врачу, то он ждет нужного специалиста.
-
 	}
 }

@@ -34,15 +34,17 @@ class Patient extends CModelEvent implements PatientInterface, StateInterface {
             $this->addSickness($sickness);
         }
         $this->onToDoctor = [new Notifer(), 'toDoctor'];
-        $this->onAlreadyInDoctor = [new Notifer(), 'alreadyInDoctor'];
+        $this->onAlreadyAtDoctor = [new Notifer(), 'alreadyAtDoctor'];
+        $this->onNoDoctor = [new Notifer(), 'noDoctor'];
     }
 
     public function toDoctor(Doctor $doctor)
     {
         $event = new CModelEvent($doctor);
+
         if ($doctor->queue->contains($this)) {
             //$this->setState(StateInterface::STATE_PATIENT_WAITING);
-            $this->onAlreadyInDoctor($event);
+            $this->onAlreadyAtDoctor($event);
         } else {
             $doctor->queue->enqueue($this);
             $this->setState(StateInterface::STATE_PATIENT_PROCESSING);
@@ -52,14 +54,29 @@ class Patient extends CModelEvent implements PatientInterface, StateInterface {
         return $event->isValid;
     }
 
+    public function noDoctor(Sickness $sickness)
+    {
+        $this->setState(self::STATE_PATIENT_NO_DOCTOR);
+        $this->onNoDoctor(new CModelEvent($sickness));
+    }
+
     public function onToDoctor($event)
     {
         $this->raiseEvent('onToDoctor', $event);
     }
 
-    public function onAlreadyInDoctor($event)
+    /**
+     * Информирует о том, что пациент уже в очереди
+     * @param CEvent $event
+     */
+    public function onAlreadyAtDoctor($event)
     {
-        $this->raiseEvent('onAlreadyInDoctor', $event);
+        $this->raiseEvent('onAlreadyAtDoctor', $event);
+    }
+
+    public function onNoDoctor($event)
+    {
+        $this->raiseEvent('onNoDoctor', $event);
     }
 
     /**

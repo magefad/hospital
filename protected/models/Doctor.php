@@ -15,7 +15,7 @@ class Doctor implements DoctorInterface, StateInterface {
     private $state = self::STATE_DOCTOR_FREE;
     private $currentPatient = null;
 
-    /** @var CQueue */
+    /** @var Queue */
     public $queue = null;
 
     /**
@@ -27,12 +27,12 @@ class Doctor implements DoctorInterface, StateInterface {
     protected function __construct()
     {
         $this->sickness = new \CList();
-        $this->queue = new CQueue();
+        $this->queue = new Queue();
     }
 
     public function getName()
     {
-        return 'Dr. [' . $this->name . ']';
+        return str_pad('Dr. [' . $this->name . ']', 27);
     }
 
     /**
