@@ -10,7 +10,7 @@
  
 
 class Patient extends CModelEvent implements PatientInterface, StateInterface {
-    /** @var CTypedList */
+    /** @var Sickness[] */
     private $sickness = null;
 
     /** @var string */
