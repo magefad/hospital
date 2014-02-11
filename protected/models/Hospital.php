@@ -61,23 +61,12 @@ class Hospital implements HospitalInterface {
 
     public function working()
     {
-        /*foreach ($this->getDoctorByStatus() as $doctor) {
-            foreach ($this->getPatientByStatus(StateInterface::STATE_PATIENT_WAITING) as $patient) {
-                foreach ($doctor->getSickness() as $sickness) {
-                    foreach ($patient->getSickness() as $pSickness) {
-                        if ($doctor->hasPatient()) {
-                            echo 'Doctor has patient ' . $currentPatient->getName();
-                            continue;
-                        }
-                        if ($sickness == $pSickness) {echo $sickness->getName();exit('die');
-                            //$doctor->attach($patient);
-                        }
-                    }
-                }
-            }
-            #$doctor->doUpdate();
-        }*/
-        #print_r($this->doctor);
+        echo PHP_EOL . '___________________________WORKING________________________________';
+        echo PHP_EOL . 'Patient List.......................................................' . PHP_EOL;
+
+        foreach ($this->getDoctorByStatus(Doctor::STATE_DOCTOR_WITH_PATIENT) as $doctor) {
+            $doctor->treatPatient()->toDoctor($this->getTherapeutist()); // для выдачи справок направляем к терапевту
+        }
     }
 
     public function statistics()
@@ -91,7 +80,9 @@ class Hospital implements HospitalInterface {
         echo PHP_EOL . 'Doctor List........................................................' . PHP_EOL;
         foreach ($this->doctor as $doctor) {
             echo $doctor->getName() . "\t";
-            echo $doctor->getState() . PHP_EOL . PHP_EOL;
+            echo $doctor->getState() . "\t";
+            echo $doctor->hasPatient() ? $doctor->getCurrentPatient()->getName() : '';
+            echo PHP_EOL;
         }
         //echo '_______________________________________________________________________' . PHP_EOL;
     }
@@ -128,7 +119,7 @@ class Hospital implements HospitalInterface {
      * @param string $state
      * @return Doctor[]
      */
-    protected function getDoctorByStatus($state = StateInterface::STATE_DOCTOR_FREE)
+    protected function getDoctorByStatus($state = StateInterface::STATE_DOCTOR_WAITING_PATIENT)
     {
         $doctors = [];
         foreach ($this->doctor as $doctor) {

@@ -10,10 +10,9 @@
 
 Yii::setPathOfAlias('Doctor', Yii::getPathOfAlias('application.models.Doctor'));
 
-class Doctor implements DoctorInterface, StateInterface {
+class Doctor extends CModelEvent implements DoctorInterface, StateInterface {
     private $name = '';
-    private $state = self::STATE_DOCTOR_FREE;
-    private $currentPatient = null;
+    private $state = self::STATE_DOCTOR_WAITING_PATIENT;
 
     /** @var Queue */
     public $queue = null;
@@ -24,10 +23,11 @@ class Doctor implements DoctorInterface, StateInterface {
      */
     protected $sickness = null;
 
-    protected function __construct()
+    public function __construct()
     {
         $this->sickness = new \CList();
         $this->queue = new Queue();
+        $this->onTreatPatient = [new Notifer(), 'treatPatient'];
     }
 
     public function getName()
@@ -45,7 +45,7 @@ class Doctor implements DoctorInterface, StateInterface {
 
     /**
      * @param string $type class name
-     * @return mixed
+     * @return Doctor|Doctor\Therapeutist
      * @throws CException
      */
     public static function create($type)
@@ -72,7 +72,7 @@ class Doctor implements DoctorInterface, StateInterface {
 
     public function isFree()
     {
-        return $this->getState() == self::STATE_DOCTOR_FREE;
+        return $this->getState() == self::STATE_DOCTOR_WAITING_PATIENT;
     }
 
     public function getSickness()
@@ -85,11 +85,36 @@ class Doctor implements DoctorInterface, StateInterface {
      */
     public function getCurrentPatient()
     {
-        return $this->currentPatient;
+        return $this->queue->peek();
     }
 
     public function hasPatient()
     {
-        return $this->currentPatient instanceof Patient;
+        return (bool)$this->queue->count;
+    }
+
+    /**
+     * Вылечивает пациента
+     * @return Patient
+     */
+    public function treatPatient()
+    {
+        /** @var Patient $patient */
+        $patient = $this->queue->dequeue();
+        $patient->setTreatDoctor($this);
+        $this->onTreatPatient(new CModelEvent($patient));
+        $patient->removeSickness($patient->currentSickness);
+        $patient->setState(self::STATE_PATIENT_HEALTHY);
+        $patient->currentSickness = null;
+
+        if (!$this->hasPatient()) {
+            $this->setState(self::STATE_DOCTOR_WAITING_PATIENT);
+        }
+        return $patient;
+    }
+
+    public function onTreatPatient(CEvent $event)
+    {
+        $this->raiseEvent('onTreatPatient', $event);
     }
 }

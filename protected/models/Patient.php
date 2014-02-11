@@ -21,6 +21,9 @@ class Patient extends CModelEvent implements PatientInterface, StateInterface {
     /** @var Sickness */
     public $currentSickness = null;
 
+    /** @var Doctor */
+    private $treatDoctor = null;
+
     /**
      * @param string $name
      * @param string $sickness название болезни
@@ -138,5 +141,22 @@ class Patient extends CModelEvent implements PatientInterface, StateInterface {
     public function getSickness()
     {
         return $this->sickness;
+    }
+
+    /**
+     * @return \Doctor
+     */
+    public function getTreatDoctor()
+    {
+        return $this->treatDoctor;
+    }
+
+    /**
+     * Лечащий врач в данный момент
+     * @param \Doctor $doctor
+     */
+    public function setTreatDoctor(Doctor $doctor)
+    {
+        $this->treatDoctor = $doctor;
     }
 }

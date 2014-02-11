@@ -16,7 +16,8 @@ class Notifer {
         $patient = $event->sender->queue->end();
         $count = $event->sender->queue->getCount() - 1;
         $type = $count === 0 ? ' => ' : " queue ({$count}) ";
-        echo ' ' . $patient->getName() . "\t" . $type . $event->sender->getName() . ' with [' . $patient->currentSickness->getName() . ']' . PHP_EOL;
+        $currentSicknessName = $patient->currentSickness ? ' with [' . $patient->currentSickness->getName() . ']' : '';
+        echo ' ' . $patient->getName() . "\t" . $type . $event->sender->getName() . $currentSicknessName . PHP_EOL;
     }
 
     public function alreadyAtDoctor(CEvent $event)
@@ -31,5 +32,15 @@ class Notifer {
     public function noDoctor(CEvent $event)
     {
         echo "\t No doctor for " . $event->sender->getName() . PHP_EOL;
+    }
+
+    /**
+     * пациент вылечен
+     * @param CEvent $event
+     */
+    public function treatPatient(CEvent $event)
+    {
+        echo $event->sender->getTreatDoctor()->getName() . ' treat (close) ' . $event->sender->getName(
+            ) . ' with [' . $event->sender->currentSickness->getName() . ']' . PHP_EOL;
     }
 }
