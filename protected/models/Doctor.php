@@ -48,7 +48,7 @@ class Doctor implements DoctorInterface, StateInterface {
      * @return mixed
      * @throws CException
      */
-    public static function load($type)
+    public static function create($type)
     {
         $className = '\Doctor\\' . $type;
         if (class_exists($className)) { // @todo проверка

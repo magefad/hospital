@@ -45,7 +45,7 @@ class Hospital implements HospitalInterface {
 
 
         foreach (self::$doctorClasses as $doctorType) {
-            $this->doctor->add(Doctor::load($doctorType));
+            $this->doctor->add(Doctor::create($doctorType));
         }
     }
 
@@ -88,7 +88,7 @@ class Hospital implements HospitalInterface {
         echo '<hr />';
 
         foreach (['Oculist', 'Otorhinolaryngologist', 'Therapeutist'] as $doctorType) {
-            $doctors[] = Doctor::load($doctorType);
+            $doctors[] = Doctor::create($doctorType);
         }
         echo 'Doctor List: <br /><br />';
         foreach ($this->doctor as $doctor) {
