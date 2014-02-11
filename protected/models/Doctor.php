@@ -10,7 +10,7 @@
 
 Yii::setPathOfAlias('Doctor', Yii::getPathOfAlias('application.models.Doctor'));
 
-class Doctor extends Observer implements DoctorInterface, StateInterface {
+class Doctor implements DoctorInterface, StateInterface {
     private $name = '';
     private $state = self::STATE_DOCTOR_FREE;
     private $currentPatient = null;
@@ -24,7 +24,6 @@ class Doctor extends Observer implements DoctorInterface, StateInterface {
      */
     protected $sickness = null;
 
-    /** @noinspection PhpHierarchyChecksInspection */
     protected function __construct()
     {
         $this->sickness = new \CList();
@@ -61,17 +60,6 @@ class Doctor extends Observer implements DoctorInterface, StateInterface {
         throw new CException('No ' . $type . ' doctor');
     }
 
-    /**
-     * @param Observable|Patient $observable
-     */
-    function doUpdate(Observable $observable)
-    {
-        $this->setState(self::STATE_DOCTOR_BUSY);
-        $observable->setState(self::STATE_PATIENT_PROCESSING);
-        echo 'Patient <b>[' . $observable->getName() . ']</b> attached to Dr. <b>[' . $this->getName(
-            ) . ']</b> with <b>[' .  $observable->currentSickness->getName() . ']</b><br />';
-    }
-
     public function setState($state)
     {
         $this->state = $state;
@@ -90,22 +78,6 @@ class Doctor extends Observer implements DoctorInterface, StateInterface {
     public function getSickness()
     {
         return $this->sickness;
-    }
-
-    /**
-     * @param Observable|Patient $observable
-     * @return bool|void
-     */
-    public function attach(Observable $observable)
-    {
-        if (!$this->hasPatient()) {
-            $this->currentPatient = $observable;
-            parent::attach($observable);
-            $observable->notify();
-            return true;
-        }
-        $this->queue->enqueue($observable);
-        return false;
     }
 
     /**

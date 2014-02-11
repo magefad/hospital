@@ -126,10 +126,4 @@ HTML;
     {
         return $this->sickness;
     }
-
-    public function update()
-    {
-        echo 'updated' . $this->getName();
-    }
-
 }
