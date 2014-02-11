@@ -16,8 +16,11 @@ class Hospital implements HospitalInterface {
 
     /** @var Patient[] */
     private $patient;
-    /** @var Doctor[]|\Doctor[] */
+
+    /** @var Doctor[] */
     private $doctor;
+
+    /** @var Sickness[] */
     private $sickness;
 
     public function __construct()
@@ -25,24 +28,21 @@ class Hospital implements HospitalInterface {
         $this->patient = new CList();
         $this->doctor = new CList();
 
-        $this->patient->add(new Patient('First', new \Sickness\Eyesight()));
-        $patient = new Patient('Second', new \Sickness\Ear());
-        $patient->addSickness(new \Sickness\Throat());
-        $this->patient->add($patient);
+        $patientSickness = [
+            'Bregnev'  => ['Eyesight'],
+            'Pugachev' => ['Ear', 'Throat'],
+            'Ivanov'   => ['Head', 'Throat'],
+            'Bolnoy'   => ['Head'],
+            'Babushka' => ['Ear', 'Eyesight', 'Throat', 'Head'],
+        ];
 
-        $patient = new Patient('Ivanov Ivan', new \Sickness\Head());
-        $patient->addSickness(new \Sickness\Throat());
-        $this->patient->add($patient);
-
-        $patient = new Patient('Bolnoy', new \Sickness\Head());
-        $this->patient->add($patient);
-
-        $patient = new Patient('ALL SICKNESS', new \Sickness\Ear());
-        $patient->addSickness(new \Sickness\Eyesight());
-        $patient->addSickness(new \Sickness\Throat());
-        $patient->addSickness(new \Sickness\Head());
-        $this->patient->add($patient);
-
+        foreach ($patientSickness as $name => $sickness) {
+            $patient = new Patient($name);
+            foreach ($sickness as $sicknessName) {
+                $patient->addSickness($sicknessName);
+            }
+            $this->patient->add($patient);
+        }
 
         foreach (self::$doctorClasses as $doctorType) {
             $this->doctor->add(Doctor::create($doctorType));

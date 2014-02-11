@@ -18,15 +18,21 @@ class Patient extends CModelEvent implements PatientInterface, StateInterface {
 
     private $name = '';
 
-    /** @var SicknessAbstract */
+    /** @var Sickness */
     public $currentSickness = null;
 
+    /**
+     * @param string $name
+     * @param string $sickness название болезни
+     */
     public function __construct($name = 'No name', $sickness = null)
     {
         parent::__construct();
         $this->name = $name;
         $this->sickness = new CList();
-        $this->addSickness($sickness);
+        if ($sickness) {
+            $this->addSickness($sickness);
+        }
         $this->onToDoctor = [new Notifer(), 'toDoctor'];
         $this->onAlreadyInDoctor = [new Notifer(), 'alreadyInDoctor'];
     }
@@ -57,17 +63,15 @@ class Patient extends CModelEvent implements PatientInterface, StateInterface {
     }
 
     /**
-     * @param \SicknessAbstract $sickness
+     * @param string $sickness
      */
     public function addSickness($sickness)
     {
-        if ($sickness instanceof SicknessAbstract) {
-            $this->sickness->add($sickness);
-        }
+        $this->sickness->add(Sickness::create($sickness));
     }
 
     /**
-     * @param \SicknessAbstract $sickness
+     * @param \Sickness $sickness
      */
     public function removeSickness($sickness)
     {
@@ -103,7 +107,7 @@ class Patient extends CModelEvent implements PatientInterface, StateInterface {
         $sicknessNames = [];
         if ($this->sickness->count) {
             foreach ($this->sickness as $sickness) {
-                /** @var SicknessAbstract $sickness */
+                /** @var Sickness $sickness */
                 $sicknessNames[] = str_replace('Sickness\\', '', $sickness->getName());
             }
         }
@@ -120,7 +124,7 @@ HTML;
     }
 
     /**
-     * @return SicknessAbstract[]
+     * @return Sickness[]
      */
     public function getSickness()
     {

@@ -12,7 +12,7 @@
 namespace Sickness;
 
 
-class Ear extends \SicknessAbstract {
+class Ear extends \Sickness {
     public function getName()
     {
         return __CLASS__;

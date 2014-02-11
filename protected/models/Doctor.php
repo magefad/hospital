@@ -19,7 +19,7 @@ class Doctor implements DoctorInterface, StateInterface {
     public $queue = null;
 
     /**
-     * @var SicknessAbstract[]
+     * @var Sickness[]
      * какие болезни лечит врач
      */
     protected $sickness = null;
