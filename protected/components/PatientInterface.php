@@ -12,7 +12,7 @@
 interface PatientInterface {
     public function __construct($name = 'No name', $sickness);
 
-    public function addSickness($sickness);
+    public function addSickness($sicknessName);
 
     public function removeSickness($sickness);
 }

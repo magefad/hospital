@@ -50,7 +50,7 @@ class Patient extends CModelEvent implements PatientInterface, StateInterface {
             $this->setState(StateInterface::STATE_PATIENT_PROCESSING);
             $this->onToDoctor($event);
         }
-        $doctor->setState(StateInterface::STATE_DOCTOR_BUSY);
+        $doctor->setState(StateInterface::STATE_DOCTOR_WITH_PATIENT);
         return $event->isValid;
     }
 
@@ -60,7 +60,7 @@ class Patient extends CModelEvent implements PatientInterface, StateInterface {
         $this->onNoDoctor(new CModelEvent($sickness));
     }
 
-    public function onToDoctor($event)
+    public function onToDoctor(CEvent $event)
     {
         $this->raiseEvent('onToDoctor', $event);
     }
@@ -69,22 +69,22 @@ class Patient extends CModelEvent implements PatientInterface, StateInterface {
      * Информирует о том, что пациент уже в очереди
      * @param CEvent $event
      */
-    public function onAlreadyAtDoctor($event)
+    public function onAlreadyAtDoctor(CEvent $event)
     {
         $this->raiseEvent('onAlreadyAtDoctor', $event);
     }
 
-    public function onNoDoctor($event)
+    public function onNoDoctor(CEvent $event)
     {
         $this->raiseEvent('onNoDoctor', $event);
     }
 
     /**
-     * @param string $sickness
+     * @param string $sicknessName
      */
-    public function addSickness($sickness)
+    public function addSickness($sicknessName)
     {
-        $this->sickness->add(Sickness::create($sickness));
+        $this->sickness->add(Sickness::create($sicknessName));
     }
 
     /**

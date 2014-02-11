@@ -16,8 +16,8 @@ interface StateInterface {
     const STATE_PATIENT_PROCESSING     = 'at the doctor..........';
     const STATE_PATIENT_NO_DOCTOR      = 'no doctor..............';
 
-    const STATE_DOCTOR_BUSY = 'attached with patient';
-    const STATE_DOCTOR_FREE = 'waiting patient..';
+    const STATE_DOCTOR_WITH_PATIENT    = 'attached with patient';
+    const STATE_DOCTOR_WAITING_PATIENT = 'waiting patient......';
 
     public function setState($state);
 
