@@ -32,7 +32,7 @@ class Doctor implements DoctorInterface, StateInterface {
 
     public function getName()
     {
-        return '[Dr. <b>' . $this->name . '</b>]';
+        return 'Dr. [' . $this->name . ']';
     }
 
     /**

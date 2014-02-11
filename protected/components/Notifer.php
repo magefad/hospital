@@ -14,11 +14,11 @@ class Notifer {
     {
         $count = $event->sender->queue->getCount() - 1;
         $type = $count === 0 ? ' going ' : " queue ({$count})";
-        echo ' &nbsp;&nbsp;' . $type . $event->sender->getName() . '</b><br />';
+        echo "\t" . $type . $event->sender->getName() . PHP_EOL;
     }
 
     public function alreadyInDoctor(CEvent $event)
     {
-        echo ' &nbsp;&nbsp;already in queue ' . $event->sender->getName() . '</b><br />';
+        echo "\t\talready in queue " . $event->sender->getName() . PHP_EOL;
     }
 } 

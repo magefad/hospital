@@ -99,7 +99,7 @@ class Patient extends CModelEvent implements PatientInterface, StateInterface {
      */
     public function getName()
     {
-        return 'Patient <b>[' . $this->name . ']</b>';
+        return 'Pt. [' . $this->name . ']';
     }
 
     public function card()
@@ -112,15 +112,7 @@ class Patient extends CModelEvent implements PatientInterface, StateInterface {
             }
         }
         $sicknessNames = implode(', ', $sicknessNames);
-        return <<<HTML
-<table border="1" cellspacing="0" width="500px">
-    <tr>
-        <th>Patient Name</th><th>Sickness</th><th>State</th>
-    </tr>
-    <tr><td>{$this->getName()}</td><td>{$sicknessNames}</td><td>{$this->getState()}</td></tr>
-</table>
-HTML;
-        //@todo табличка все время, но нет времени делать
+        return "{$this->getName()}\t{$this->getState()}\t[$sicknessNames]";
     }
 
     /**

@@ -27,7 +27,7 @@ class Therapeutist extends \Doctor {
 
     public function getDirectForPatient(\Patient $patient, \CList $doctor)
     {
-        echo '<br />' . $this->getName() . ' <- ' . $patient->getName() . '<br />';
+        echo PHP_EOL . $this->getName() . ' <- ' . $patient->getName() . PHP_EOL;
         foreach ($patient->getSickness() as $sickness) {
             /** @var \Doctor $doc */
             foreach ($doctor as $doc) {
