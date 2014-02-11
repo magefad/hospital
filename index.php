@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL);
-defined('YII_DEBUG') or define('YII_DEBUG', true);
+defined('YII_DEBUG') or define('YII_DEBUG', false);
 
-require_once(dirname(__FILE__) . '/../yii/framework/yii.php');
-Yii::createWebApplication(dirname(__FILE__) . '/protected/config/main.php')->run();
+require_once('phar://' . __DIR__ . '/yii.phar/yiilite.php');
+Yii::createWebApplication(__DIR__ . '/protected/config/main.php')->run();
